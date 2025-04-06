@@ -19,18 +19,19 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     _loadUserInfo(); // Load saved data when the screen initializes
   }
 
-  // Load saved user information to Hive
+  // Load saved user information from Hive
   Future<void> _loadUserInfo() async {
     final box = Hive.box('userBox');
     setState(() {
-      _weightController.text = box.get('weight', defaultValue: '') as String;
+      final weight = box.get('weight', defaultValue: null) as int?;
+      _weightController.text = weight != null ? weight.toString() : '';
       _selectedSex = box.get('sex', defaultValue: null) as String?;
     });
   }
 
   // Save user information to Hive
   Future<void> _saveUserInfo() async {
-    final weight = double.tryParse(_weightController.text);
+    final weight = int.tryParse(_weightController.text); // Parse weight as int
 
     if (weight == null || _selectedSex == null) {
       // Show an error message if any field is invalid
@@ -44,7 +45,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     }
 
     final box = Hive.box('userBox');
-    await box.put('weight', _weightController.text); // Save weight
+    await box.put('weight', weight); // Save weight as an int
     await box.put('sex', _selectedSex); // Save sex
 
     // Show a success message
@@ -114,7 +115,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
               child: ElevatedButton(
                 onPressed: _saveUserInfo,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 177, 225, 179), // Button color
+                  backgroundColor:
+                      const Color.fromARGB(255, 177, 225, 179),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                   textStyle:
@@ -126,7 +128,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           ],
         ),
       ),
-            // Bottom Navigation Bar
+      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavBar(
         currentIndex: 2, // Index for "User Info" tab
         onTap: (index) {
@@ -148,5 +150,4 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       ),
     );
   }
-  
 }

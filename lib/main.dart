@@ -1,6 +1,7 @@
+import 'package:easy_track/models/session.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_track/screens/home_screen.dart';
-import 'package:easy_track/screens/session.dart';
+import 'package:easy_track/screens/sessions.dart';
 // import 'package:easy_track/screens/information.dart';
 import 'package:easy_track/screens/user_info.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -11,7 +12,7 @@ void main() async {
 
   await Hive.openBox('userBox');
   await Hive.openBox<DateTime>('drinksBox');
-  await Hive.openBox<DateTime>('sessionsBox');
+  await Hive.openBox<Session>('sessionsBox');
 
   runApp(const EasyTrackApp());
 }
@@ -27,7 +28,7 @@ class EasyTrackApp extends StatelessWidget {
       routes: {
         '/': (context) => const HomeScreen(), // Home page
         '/sessions': (context) => const SessionScreen(),
-        '/user-info': (context) => const UserInfoScreen(), // User info page
+        '/user_info': (context) => const UserInfoScreen(), // User info page
         // '/information': (context) => const InformationScreen(), // Info page
         // '/tracking': (context) => const TrackingScreen(), // Tracking functionality
       },
