@@ -33,7 +33,7 @@ double calculateCurrentBAC({
     // modified with an absorption delay
     int elapsedMinutes = currentTime.difference(drinkTime).inMinutes;
     double absorptionFraction = 1 - exp(-absorptionRatePerMinute * elapsedMinutes);
-    double drinkBAC = (standardDrinkGrams / (weightGrams * r)) * absorptionFraction;
+    double drinkBAC = (standardDrinkGrams / (weightGrams * r)) * absorptionFraction * 100;
     drinkBAC -= eliminationRate * (elapsedMinutes / 60.0);
 
     drinkBAC = max(0, drinkBAC);

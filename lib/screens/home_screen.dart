@@ -46,6 +46,38 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } 
 
+  //    // Calculate current BAC
+  // double currentBAC = 0.0;
+  // if (isTracking) {
+  //   final weight = userBox.get('weight');
+  //   final sex = userBox.get('sex');
+  //   if (_isValidUserData(weight, sex)) {
+  //     currentBAC = calculateCurrentBAC(
+  //       weightLb: double.tryParse(weight.toString()) ?? 0.0,
+  //       sex: sex.toString(),
+  //       drinks: drinksBox.values.toList(),
+  //     );
+  //   }
+  // }
+
+  // // Determine AppBar color based on BAC range
+  // Color _getAppBarColor(double bac) {
+  //   if (bac >= 0.08) {
+  //     return Colors.red;
+  //   } else if (bac >= 0.04) {
+  //     return Colors.yellow;
+  //   } else {
+  //     return Colors.green;
+  //   }
+  // }
+
+  // return Scaffold(
+  //   appBar: AppBar(
+  //     title: const Text('Easy Track'),
+  //     automaticallyImplyLeading: false,
+  //     backgroundColor: _getAppBarColor(currentBAC), // Dynamic AppBar color
+  //   ),
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Easy Track'),

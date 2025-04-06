@@ -17,7 +17,7 @@ List<FlSpot> generateBACDataPoints({
   consumptionTimes.sort();
 
   // Start time is the time of the first drink
-  DateTime startTime = consumptionTimes.first;
+  DateTime startTime = consumptionTimes.first.add(const Duration(minutes: 5));
   DateTime currentTime = startTime;
   double bac = 0.0;
 
