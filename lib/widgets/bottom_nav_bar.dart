@@ -5,10 +5,10 @@ class BottomNavBar extends StatelessWidget {
   final Function(int) onTap;
 
   const BottomNavBar({
-    super.key,
+    Key? key,
     required this.currentIndex,
     required this.onTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,12 @@ class BottomNavBar extends StatelessWidget {
       selectedItemColor: Colors.green,
       unselectedItemColor: Colors.grey,
       currentIndex: currentIndex, // Highlight the selected tab
-      onTap: onTap, // Callback to handle navigation
+      onTap: (index) {
+        if (index != currentIndex) {
+          // Only navigate if the selected index is different from the current index
+          onTap(index);
+        }
+      },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.today), label: 'Today'),
         BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Calendar'),

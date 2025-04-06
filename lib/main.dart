@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 
-  await Hive.openBox('bacData');
+  await Hive.openBox('userBox');
 
   runApp(const EasyTrackApp());
 }

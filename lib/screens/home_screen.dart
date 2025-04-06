@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/'); // Navigate to Home Screen
+              // Do nothing, already on "Today" tab
               break;
             case 1:
               Navigator.pushNamed(context, '/calendar'); // Navigate to Calendar Screen
