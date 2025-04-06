@@ -45,11 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>UIBackgroundModes</key>
+	<!-- <key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
-	<key>UNUserNotificationCenterDelegate</key>
+	<key>UNUserNotificationCenterDelegate</key> -->
 </dict>
 </plist>
