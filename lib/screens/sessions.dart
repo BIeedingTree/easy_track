@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import '../models/session.dart';
 
 class SessionScreen extends StatelessWidget {
@@ -7,31 +8,30 @@ class SessionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentSession = SessionService.currentSession;
-    final pastSessions = Hive.box<Session>('sessions').values.toList().reversed;
+    // Fetch all sessions from the 'sessionsBox'
+    final sessionsBox = Hive.box<Session>('sessionsBox');
+    final pastSessions = sessionsBox.values.toList().reversed;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Sessions')),
-      body: ListView(
-        children: [
-          if (currentSession != null)
-            _buildSessionTile(currentSession, isCurrent: true),
-          for (final session in pastSessions)
-            _buildSessionTile(session),
-        ],
+      body: ListView.builder(
+        itemCount: pastSessions.length,
+        itemBuilder: (context, index) {
+          final session = pastSessions.elementAt(index);
+          return _buildSessionTile(session);
+        },
       ),
     );
   }
 
-  Widget _buildSessionTile(Session session, {bool isCurrent = false}) {
+  Widget _buildSessionTile(Session session) {
     return ListTile(
-      title: Text(isCurrent ? 'Current Session' : 'Session'),
+      title: const Text('Session'),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Start: ${DateFormat.yMd().add_jm().format(session.startTime)}'),
           Text('End: ${DateFormat.yMd().add_jm().format(session.endTime)}'),
-          Text('Drinks: ${session.drinks.length}'),
           Text('Max BAC: ${session.maxBAC.toStringAsFixed(3)}'),
         ],
       ),
