@@ -135,7 +135,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
               Navigator.pushNamed(context, '/'); // Navigate to Home Screen
               break;
             case 1:
-              Navigator.pushNamed(context, '/calendar'); // Navigate to Calendar Screen
+              Navigator.pushNamed(context, '/session'); // Navigate to Session Screen
               break;
             case 2:
               // Do nothing since this is the current page 
