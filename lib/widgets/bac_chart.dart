@@ -14,24 +14,36 @@ class BACChart extends StatelessWidget {
 
     return LineChart(
       LineChartData(
+        lineTouchData: const LineTouchData(enabled: false),
         titlesData: FlTitlesData(
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
               interval: 1,
-              getTitlesWidget: (value, _) {
+              getTitlesWidget: (value, meta) {
                 return Text("${value.toStringAsFixed(1)}h",
                     style: const TextStyle(fontSize: 10));
               },
             ),
           ),
-          leftTitles: AxisTitles(
+          leftTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          rightTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
+              reservedSize: 60,
               interval: 0.02,
-              getTitlesWidget: (value, _) {
-                return Text(value.toStringAsFixed(2),
-                    style: const TextStyle(fontSize: 10));
+              getTitlesWidget: (value, meta) {
+                return Text(
+                  value.toStringAsFixed(2),
+                  style: const TextStyle(fontSize: 8),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                );
               },
             ),
           ),
@@ -48,13 +60,13 @@ class BACChart extends StatelessWidget {
             color: Colors.redAccent,
             belowBarData: BarAreaData(
               show: true,
-              color: Colors.redAccent.withValues(alpha: 255*0.3)),
+              color: Colors.redAccent.withOpacity(0.3),
+            ),
             dotData: const FlDotData(show: false),
           )
         ],
         gridData: const FlGridData(show: true),
         borderData: FlBorderData(show: true),
-        lineTouchData: const LineTouchData(enabled: false),
       ),
     );
   }
