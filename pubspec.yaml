@@ -11,8 +11,13 @@ dependencies:
   cupertino_icons: ^1.0.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+<<<<<<< Updated upstream
   fl_chart: ^0.70.0
   intl: ^0.20.2
+=======
+  fl_chart: ^0.70.2
+  intl: ^0.17.0
+>>>>>>> Stashed changes
 
 dev_dependencies:
   flutter_test:

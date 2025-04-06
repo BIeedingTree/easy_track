@@ -48,8 +48,7 @@ class BACChart extends StatelessWidget {
             color: Colors.redAccent,
             belowBarData: BarAreaData(
               show: true,
-              color: Colors.redAccent.withValues(alpha: (255 * 0.3)),
-            ),
+              color: Colors.redAccent.withOpacity(0.3)),
             dotData: const FlDotData(show: false),
           )
         ],
