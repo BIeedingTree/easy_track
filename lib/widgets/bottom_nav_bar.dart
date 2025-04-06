@@ -16,10 +16,9 @@ class BottomNavBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.green,
       unselectedItemColor: Colors.grey,
-      currentIndex: currentIndex, // Highlight the selected tab
+      currentIndex: currentIndex,
       onTap: (index) {
         if (index != currentIndex) {
-          // Only navigate if the selected index is different from the current index
           onTap(index);
         }
       },

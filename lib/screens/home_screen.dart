@@ -34,8 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate BAC data points when tracking is active
     List<FlSpot> bacData = [];
+    
     if (isTracking) {
       final weight = userBox.get('weight');
       final sex = userBox.get('sex');
@@ -47,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } 
 
-  // Calculate current BAC
   double _calculateMaxBAC({
   required double weightLb,
   required String sex,
@@ -85,7 +84,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Determine AppBar color based on BAC range
   Color _getAppBarColor(double maxBAC) {
     if (maxBAC >= 0.08) {
       return Colors.red;
@@ -100,15 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
     appBar: AppBar(
       title: const Text('Easy Track'),
       automaticallyImplyLeading: false,
-      backgroundColor: _getAppBarColor(maxBAC), // Dynamic AppBar color
+      backgroundColor: _getAppBarColor(maxBAC),
     ),
-
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: const Text('Easy Track'),
-    //     automaticallyImplyLeading: false,
-    //     backgroundColor: Colors.green,
-    //   ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

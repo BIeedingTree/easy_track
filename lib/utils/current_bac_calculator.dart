@@ -5,7 +5,7 @@ import 'dart:math';
 /// drinks: List of Drink objects representing each drink consumed.
 /// currentTime: The current time for calculating elapsed time.
 /// 
-/// Returns the current BAC as a double.
+/// Returns the current BAC as a double using a modified Widmark formula
 double calculateCurrentBAC({
   required double weightLb,
   required String sex,
@@ -33,10 +33,8 @@ double calculateCurrentBAC({
     totalAbsorbedAlcohol += standardDrinkGrams * absorptionFraction;
   }
 
-  // Calculate the BAC without elimination
   double bacWithoutElimination = (totalAbsorbedAlcohol / (weightGrams * r)) * 100;
 
-  // Compute elimination based on the elapsed time since the first drink
   int totalElapsedMinutes = currentTime.difference(consumptionTimes.first).inMinutes;
   double elimination = eliminationRate * (totalElapsedMinutes / 60.0);
 

@@ -12,11 +12,10 @@ List<FlSpot> generateBACDataPoints({
   var drinksBox = Hive.box<DateTime>('drinksBox');
   if (drinksBox.isEmpty) return dataPoints;
 
-  // Sort drinks by time consumed
   List<DateTime> consumptionTimes = drinksBox.values.toList();
   consumptionTimes.sort();
 
-  // Start time is the time of the first drink
+  // Start time has 5 minutes added since BAC starts at 0 in the while loop
   DateTime startTime = consumptionTimes.first.add(const Duration(minutes: 5));
   DateTime currentTime = startTime;
   double bac = 0.0;
@@ -30,7 +29,7 @@ List<FlSpot> generateBACDataPoints({
       currentTime: currentTime,
     );
 
-    // Time difference in hours from the start time
+    // Time difference in hours
     double hoursSinceStart = currentTime.difference(startTime).inMinutes / 60.0;
     dataPoints.add(FlSpot(hoursSinceStart, bac));
 

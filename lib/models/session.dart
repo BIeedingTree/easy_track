@@ -16,7 +16,6 @@ class Session {
   required this.sex,
 });
 
-
   Session.fromDrinks({
     required this.weightLb,
     required this.sex,
