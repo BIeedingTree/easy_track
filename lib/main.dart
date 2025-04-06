@@ -3,8 +3,14 @@ import 'package:easy_track/screens/home_screen.dart';
 // import 'package:easy_track/screens/calendar.dart';
 // import 'package:easy_track/screens/information.dart';
 import 'package:easy_track/screens/user-info.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+
+  await Hive.openBox('bacData');
+
   runApp(const EasyTrackApp());
 }
 
