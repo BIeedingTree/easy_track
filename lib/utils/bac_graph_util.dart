@@ -1,20 +1,23 @@
-import 'package:easy_track/models/drink.dart';
 import 'package:easy_track/utils/current_bac_calculator.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:hive/hive.dart';
+
 
 List<FlSpot> generateBACDataPoints({
   required double weightLb,
   required String sex,
-  required List<Drink> drinks,
 }) {
   List<FlSpot> dataPoints = [];
-  if (drinks.isEmpty) return dataPoints;
+
+  var drinksBox = Hive.box<DateTime>('drinksBox');
+  if (drinksBox.isEmpty) return dataPoints;
 
   // Sort drinks by time consumed
-  drinks.sort((a, b) => a.timeConsumed.compareTo(b.timeConsumed));
+  List<DateTime> consumptionTimes = drinksBox.values.toList();
+  consumptionTimes.sort();
 
   // Start time is the time of the first drink
-  DateTime startTime = drinks.first.timeConsumed;
+  DateTime startTime = consumptionTimes.first;
   DateTime currentTime = startTime;
   double bac = 0.0;
 
@@ -23,7 +26,7 @@ List<FlSpot> generateBACDataPoints({
     bac = calculateCurrentBAC(
       weightLb: weightLb,
       sex: sex,
-      drinks: drinks,
+      consumptionTimes: consumptionTimes,
       currentTime: currentTime,
     );
 
