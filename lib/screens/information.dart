@@ -40,7 +40,7 @@ class InformationScreen extends StatelessWidget {
               const Text(
                 'Please input your weight and sex information for Easy Track to algorithmically calculate your BAC. Simply click the "Start Session" '
                 'button to start tracking, and add standard drinks when you drink them. Click End Session when you are finished. Easy Track will display your BAC curve and '
-                'indicate your level of intoxication using color coding. Green indicates a BAC of 0.00-0.04, yellow indicates a BAC of 0.04-0.08, and red indicates a BAC of 0.08 or higher.',
+                'indicate your predicted peak BAC using color coding. Green indicates a BAC of 0.00-0.04, yellow indicates a BAC of 0.04-0.08, and red indicates a BAC of 0.08 or higher.',
                 style: TextStyle(fontSize: 15.2),
               ),
               const SizedBox(height: 20),
