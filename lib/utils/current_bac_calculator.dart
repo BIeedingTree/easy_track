@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:easy_track/models/drink.dart';
 
 /// weightLb: User's weight in pounds.
 /// sex: male or female.
@@ -10,7 +9,7 @@ import 'package:easy_track/models/drink.dart';
 double calculateCurrentBAC({
   required double weightLb,
   required String sex,
-  required List<Drink> drinks,
+  required List<DateTime> consumptionTimes,
   DateTime? currentTime,
 }) {
   double r;
@@ -32,13 +31,13 @@ double calculateCurrentBAC({
   double weightGrams = weightLb * 453.6;
   double totalBAC = 0.0;
 
-  for (var drink in drinks) {
+  for (var drinkTime in consumptionTimes) {
     // Only consider drinks consumed at or before the current time.
-    if (drink.timeConsumed.isAfter(currentTime)) {
+    if (drinkTime.isAfter(currentTime)) {
       continue;
     }
 
-    double hoursElapsed = currentTime.difference(drink.timeConsumed).inMinutes / 60.0;
+    double hoursElapsed = currentTime.difference(drinkTime).inMinutes / 60.0;
 
     // Calculate the BAC contribution for this standard drink using the Widmark formula
     double drinkBAC = (standardDrinkGrams / (weightGrams * r)) * 100 - (eliminationRate * hoursElapsed);

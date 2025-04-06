@@ -10,9 +10,8 @@ void main() async {
   await Hive.initFlutter();
 
   await Hive.openBox('userBox');
-
   await Hive.openBox<DateTime>('drinksBox');
-
+  await Hive.openBox<DateTime>('sessionsBox');
 
   runApp(const EasyTrackApp());
 }
