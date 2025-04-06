@@ -1,57 +1,40 @@
 import 'package:flutter/material.dart';
-import '../widgets/bottom_nav_bar.dart';
 import 'package:hive/hive.dart';
+import '../models/session.dart';
 
 class SessionScreen extends StatelessWidget {
   const SessionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final currentSession = SessionService.currentSession;
+    final pastSessions = Hive.box<Session>('sessions').values.toList().reversed;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sessions'),
-        backgroundColor: Colors.green,
-      ),
+      appBar: AppBar(title: const Text('Sessions')),
       body: ListView(
         children: [
-          if (SessionService.currentSession != null)
-            _buildCurrentSession(),
-          
-          _buildPastSessions(),
+          if (currentSession != null)
+            _buildSessionTile(currentSession, isCurrent: true),
+          for (final session in pastSessions)
+            _buildSessionTile(session),
         ],
       ),
     );
   }
 
-  Widget _buildCurrentSession() {
-    final session = SessionService.currentSession!;
-    return ExpansionTile(
-      title: const Text('Current Session'),
-      children: [
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: session.drinks.length,
-          itemBuilder: (context, i) => ListTile(
-            title: Text('Drink ${i + 1}'),
-            subtitle: Text(DateFormat.jm().format(session.drinks[i].time)),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPastSessions() {
-    final sessions = Hive.box<Session>('sessionsBox').values.toList().reversed;
-    return Column(
-      children: sessions.map((session) => _buildSessionTile(session)).toList(),
-    );
-  }
-
-  Widget _buildSessionTile(Session session) {
+  Widget _buildSessionTile(Session session, {bool isCurrent = false}) {
     return ListTile(
-      title: Text('Session ${DateFormat.yMd().format(session.startTime)}'),
-      subtitle: Text('${session.drinks.length} drinks - Max BAC: ${session.maxBAC.toStringAsFixed(3)}'),
-      trailing: Text(DateFormat.jm().format(session.endTime)),
+      title: Text(isCurrent ? 'Current Session' : 'Session'),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Start: ${DateFormat.yMd().add_jm().format(session.startTime)}'),
+          Text('End: ${DateFormat.yMd().add_jm().format(session.endTime)}'),
+          Text('Drinks: ${session.drinks.length}'),
+          Text('Max BAC: ${session.maxBAC.toStringAsFixed(3)}'),
+        ],
+      ),
     );
   }
 }

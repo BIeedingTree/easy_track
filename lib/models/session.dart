@@ -8,6 +8,15 @@ class Session {
   final double weightLb;
   final String sex;
 
+  Session({
+  required this.startTime,
+  required this.endTime,
+  required this.maxBAC,
+  required this.weightLb,
+  required this.sex,
+});
+
+
   Session.fromDrinks({
     required this.weightLb,
     required this.sex,
@@ -59,3 +68,5 @@ class Session {
     return maxBACValue;
   }
 }
+
+

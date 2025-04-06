@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/bottom_nav_bar.dart';
 import 'package:hive/hive.dart';
+import '../utils/session_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,54 +15,54 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Easy Track'),
-        backgroundColor: Colors.green,
         actions: [
           if (SessionService.currentSession != null)
             IconButton(
               icon: const Icon(Icons.stop),
               onPressed: _confirmEndSession,
+              tooltip: 'End Session',
             ),
         ],
       ),
-      body: Column(
-        children: [
-          // BAC Graph
-          Expanded(child: _buildBACChart()),
-          
-          // Session Controls
-          _buildSessionButton(),
-        ],
+      body: Center(
+        child: SessionService.currentSession == null
+            ? _buildStartSessionButton()
+            : _buildAddDrinkButton(),
       ),
-      bottomNavigationBar: BottomNavBar(currentIndex: 0),
     );
   }
 
-  Widget _buildSessionButton() {
-    return SessionService.currentSession == null
-        ? ElevatedButton(
-            onPressed: _startSession,
-            child: const Text('Start Session'),
-          )
-        : ElevatedButton(
-            onPressed: _addDrink,
-            child: const Text('Add Standard Drink'),
-          );
+  Widget _buildStartSessionButton() {
+    return ElevatedButton(
+      onPressed: _checkUserInfoAndStartSession,
+      child: const Text('Start Session'),
+    );
   }
 
-  void _startSession() {
-    if (!_userInfoComplete()) {
+  Widget _buildAddDrinkButton() {
+    return ElevatedButton(
+      onPressed: SessionService.addDrink,
+      child: const Text('Add Standard Drink'),
+    );
+  }
+
+  void _checkUserInfoAndStartSession() {
+    final userBox = Hive.box('userBox');
+    final weight = userBox.get('weight');
+    final sex = userBox.get('sex');
+
+    if (weight == null || sex == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please complete user info first')));
+        const SnackBar(
+          content: Text('Please complete user information first'),
+          duration: Duration(seconds: 2),
+        ),
+      );
       return;
     }
-    
-    SessionService.startSession();
-    setState(() {});
-  }
 
-  bool _userInfoComplete() {
-    final userBox = Hive.box('userBox');
-    return userBox.get('weight') != null && userBox.get('sex') != null;
+    SessionService.startSession(weight, sex);
+    setState(() {});
   }
 
   void _confirmEndSession() {
@@ -70,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('End Session?'),
+        content: const Text('Are you sure you want to end the current session?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
