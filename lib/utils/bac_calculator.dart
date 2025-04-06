@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:fl_chart/fl_chart.dart';
 
 class Drink {
   final DateTime timeConsumed;
@@ -18,9 +19,8 @@ double calculateCurrentBAC({
   required double weightLb,
   required String sex,
   required List<Drink> drinks,
-  required DateTime currentTime,
+  DateTime? currentTime,
 }) {
-  // Set the alcohol distribution ratio based on sex.
   double r;
   if (sex == 'male') {
     r = 0.68;
@@ -32,6 +32,8 @@ double calculateCurrentBAC({
     r = 0.615;
   }
 
+  currentTime ??= DateTime.now();
+
   const double eliminationRate = 0.015;
   const double standardDrinkGrams = 14.0;
 
@@ -39,6 +41,11 @@ double calculateCurrentBAC({
   double totalBAC = 0.0;
 
   for (var drink in drinks) {
+    // Only consider drinks consumed at or before the current time.
+    if (drink.timeConsumed.isAfter(currentTime)) {
+      continue;
+    }
+
     double hoursElapsed = currentTime.difference(drink.timeConsumed).inMinutes / 60.0;
 
     // Calculate the BAC contribution for this standard drink using the Widmark formula
@@ -50,4 +57,40 @@ double calculateCurrentBAC({
   }
   
   return totalBAC;
+}
+
+List<FlSpot> generateBACDataPoints({
+  required double weightKg,
+  required String sex,
+  required List<Drink> drinks,
+}) {
+  List<FlSpot> dataPoints = [];
+  if (drinks.isEmpty) return dataPoints;
+
+  // Sort drinks by time consumed
+  drinks.sort((a, b) => a.timeConsumed.compareTo(b.timeConsumed));
+
+  // Start time is the time of the first drink
+  DateTime startTime = drinks.first.timeConsumed;
+  DateTime currentTime = startTime;
+  double bac = 0.0;
+
+  // Simulate BAC over time until it reaches 0
+  while (bac > 0 || currentTime == startTime) {
+    bac = calculateCurrentBAC(
+      weightLb: weightKg * 2.205, // Convert kg to lbs
+      sex: sex,
+      drinks: drinks,
+      currentTime: currentTime,
+    );
+
+    // Time difference in hours from the start time
+    double hoursSinceStart = currentTime.difference(startTime).inMinutes / 60.0;
+    dataPoints.add(FlSpot(hoursSinceStart, bac));
+
+    // Increment time by 5 minutes
+    currentTime = currentTime.add(Duration(minutes: 5));
+  }
+
+  return dataPoints;
 }
