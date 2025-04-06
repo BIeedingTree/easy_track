@@ -26,10 +26,9 @@ class BACChart extends StatelessWidget {
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
-              interval: 1, // 1 hour
+              interval: 1,
               getTitlesWidget: (value, meta) {
-                return Text("${value.toStringAsFixed(1)}h",
-                    style: const TextStyle(fontSize: 12));
+                return Text("${value.round()}h", style: const TextStyle(fontSize: 12));
               },
             ),
           ),
