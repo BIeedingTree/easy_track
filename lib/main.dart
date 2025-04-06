@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_track/screens/home_screen.dart';
-// import 'package:easy_track/screens/calendar.dart';
+// import 'package:easy_track/screens/session.dart';
 // import 'package:easy_track/screens/information.dart';
 import 'package:easy_track/screens/user_info.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -26,7 +26,7 @@ class EasyTrackApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomeScreen(), // Home page
-        // '/calendar': (context) => const CalendarScreen(), // Calendar page
+        // '/calendar': (context) => const SessionScreen(), // Session page
         '/user-info': (context) => const UserInfoScreen(), // User info page
         // '/information': (context) => const InformationScreen(), // Info page
         // '/tracking': (context) => const TrackingScreen(), // Tracking functionality
