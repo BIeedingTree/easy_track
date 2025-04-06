@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:easy_track/screens/home_screen.dart';
 
 void main() {
   runApp(const EasyTrackApp());
@@ -14,7 +14,7 @@ class EasyTrackApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        // '/': (context) => const HomeScreen(), // Home page
+        '/': (context) => const HomeScreen(), // Home page
         // '/calendar': (context) => const CalendarScreen(), // Calendar page
         // '/user-info': (context) => const UserInfoScreen(), // User info page
         // '/information': (context) => const InformationScreen(), // Info page
