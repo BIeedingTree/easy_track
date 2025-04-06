@@ -1,13 +1,6 @@
 import 'dart:math';
+import 'package:easy_track/models/drink.dart';
 import 'package:fl_chart/fl_chart.dart';
-
-class Drink {
-  final DateTime timeConsumed;
-
-  Drink({
-    required this.timeConsumed,
-  });
-}
 
 /// weightLb: User's weight in pounds.
 /// sex: male or female.
