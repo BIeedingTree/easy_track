@@ -1,6 +1,7 @@
+import 'package:easy_track/utils/current_bac_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import '../models/session.dart';
+// import '../models/session.dart';
 import '../widgets/bac_chart.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:easy_track/utils/bac_graph_util.dart';
@@ -15,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Box<DateTime> drinksBox;
-  late Box<Session> sessionsBox;
+  // late Box<Session> sessionsBox;
   late Box userBox;
 
   bool isTracking = false;
@@ -25,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     drinksBox = Hive.box<DateTime>('drinksBox');
-    sessionsBox = Hive.box<Session>('sessionsBox');
+    // sessionsBox = Hive.box<Session>('sessionsBox');
     userBox = Hive.box('userBox');
     isTracking = drinksBox.isNotEmpty;
     drinkCount = drinksBox.length;
@@ -46,44 +47,68 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } 
 
-  //    // Calculate current BAC
-  // double currentBAC = 0.0;
-  // if (isTracking) {
-  //   final weight = userBox.get('weight');
-  //   final sex = userBox.get('sex');
-  //   if (_isValidUserData(weight, sex)) {
-  //     currentBAC = calculateCurrentBAC(
-  //       weightLb: double.tryParse(weight.toString()) ?? 0.0,
-  //       sex: sex.toString(),
-  //       drinks: drinksBox.values.toList(),
-  //     );
-  //   }
-  // }
+  // Calculate current BAC
+  double _calculateMaxBAC({
+  required double weightLb,
+  required String sex,
+  required List<DateTime> consumptionTimes,
+  }) {
+    if (drinksBox.isEmpty) {
+      return 0.0;
+    }
+    
+    double maxBACValue = 0.0;
+    DateTime startTime = consumptionTimes.first;
+    DateTime endTime = consumptionTimes.last.add(const Duration(minutes: 45));
 
-  // // Determine AppBar color based on BAC range
-  // Color _getAppBarColor(double bac) {
-  //   if (bac >= 0.08) {
-  //     return Colors.red;
-  //   } else if (bac >= 0.04) {
-  //     return Colors.yellow;
-  //   } else {
-  //     return Colors.green;
-  //   }
-  // }
+    // Iterate through time in 5-minute increments from start to extended end time
+    for (DateTime currentTime = startTime;
+        currentTime.isBefore(endTime);
+        currentTime = currentTime.add(const Duration(minutes: 5))) {
+      double bac = calculateCurrentBAC(weightLb: weightLb, sex: sex, consumptionTimes: consumptionTimes, currentTime: currentTime);
 
-  // return Scaffold(
-  //   appBar: AppBar(
-  //     title: const Text('Easy Track'),
-  //     automaticallyImplyLeading: false,
-  //     backgroundColor: _getAppBarColor(currentBAC), // Dynamic AppBar color
-  //   ),
+      if (bac > maxBACValue) {
+        maxBACValue = bac;
+      }
+    }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Easy Track'),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.green,
-      ),
+    return maxBACValue;
+  }
+
+  double maxBAC = 0.0;
+  
+  if (isTracking) {
+    final weight = userBox.get('weight');
+    final sex = userBox.get('sex');
+    if (_isValidUserData(weight, sex)) {
+      maxBAC = _calculateMaxBAC(weightLb: double.parse(weight.toString()), sex: sex, consumptionTimes: drinksBox.values.toList());
+    }
+  }
+
+  // Determine AppBar color based on BAC range
+  Color _getAppBarColor(double maxBAC) {
+    if (maxBAC >= 0.08) {
+      return Colors.red;
+    } else if (maxBAC >= 0.04) {
+      return Colors.yellow;
+    } else {
+      return Colors.green;
+    }
+  }
+
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Easy Track'),
+      automaticallyImplyLeading: false,
+      backgroundColor: _getAppBarColor(maxBAC), // Dynamic AppBar color
+    ),
+
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: const Text('Easy Track'),
+    //     automaticallyImplyLeading: false,
+    //     backgroundColor: Colors.green,
+    //   ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -225,16 +250,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _endSession() {
-    final weight = userBox.get('weight');
-    final sex = userBox.get('sex');
+    // final weight = userBox.get('weight');
+    // final sex = userBox.get('sex');
 
-    if (_isValidUserData(weight, sex)) {
-      final session = Session.fromDrinks(
-        weightLb: double.parse(weight.toString()),
-        sex: sex,
-      );
-      sessionsBox.add(session);
-    }
+    // if (_isValidUserData(weight, sex)) {
+    //   final session = Session.fromDrinks(
+    //     weightLb: double.parse(weight.toString()),
+    //     sex: sex,
+    //   );
+    //   sessionsBox.add(session);
+    // }
     drinksBox.clear();
     setState(() {
       isTracking = false;
