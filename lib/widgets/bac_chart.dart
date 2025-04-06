@@ -12,6 +12,10 @@ class BACChart extends StatelessWidget {
       return const Center(child: Text("No BAC data available."));
     }
 
+    final double maxY = bacData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 0.01;
+    const int yLabelCount = 10;
+    final double yInterval = maxY / yLabelCount;
+
     return LineChart(
       LineChartData(
         lineTouchData: const LineTouchData(enabled: false),
@@ -22,10 +26,10 @@ class BACChart extends StatelessWidget {
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
-              interval: 1,
+              interval: 1, // 1 hour
               getTitlesWidget: (value, meta) {
                 return Text("${value.toStringAsFixed(1)}h",
-                    style: const TextStyle(fontSize: 10));
+                    style: const TextStyle(fontSize: 12));
               },
             ),
           ),
@@ -35,13 +39,12 @@ class BACChart extends StatelessWidget {
           rightTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
-              reservedSize: 60,
-              interval: 0.02,
+              reservedSize: 50,
+              interval: yInterval,
               getTitlesWidget: (value, meta) {
                 return Text(
-                  value.toStringAsFixed(2),
-                  style: const TextStyle(fontSize: 8),
-                  maxLines: 1,
+                  value.toStringAsFixed(3),
+                  style: const TextStyle(fontSize: 12),
                   overflow: TextOverflow.ellipsis,
                 );
               },
@@ -51,7 +54,7 @@ class BACChart extends StatelessWidget {
         minX: 0,
         maxX: bacData.last.x,
         minY: 0,
-        maxY: bacData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 0.01,
+        maxY: maxY,
         lineBarsData: [
           LineChartBarData(
             spots: bacData,
