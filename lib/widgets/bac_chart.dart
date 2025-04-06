@@ -54,6 +54,7 @@ class BACChart extends StatelessWidget {
         ],
         gridData: const FlGridData(show: true),
         borderData: FlBorderData(show: true),
+        lineTouchData: const LineTouchData(enabled: false),
       ),
     );
   }

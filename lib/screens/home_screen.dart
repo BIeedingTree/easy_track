@@ -80,9 +80,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             
             // Middle - BAC Chart
-            Expanded(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: isTracking 
-                ? BACChart(bacData: bacData)
+                ? SizedBox(
+                    height: 300,
+                    child: BACChart(bacData: bacData),
+                  )
                 : const Center(child: Text('No active session')),
             ),
             
