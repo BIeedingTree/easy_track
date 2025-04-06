@@ -27,6 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
     drinksBox = Hive.box<DateTime>('drinksBox');
     sessionsBox = Hive.box<Session>('sessionsBox');
     userBox = Hive.box('userBox');
+    isTracking = drinksBox.isNotEmpty;
+    drinkCount = drinksBox.length;
   }
 
   @override
@@ -93,10 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                   ),
                   onPressed: isTracking 
-                    ? () {
-                        drinksBox.add(DateTime.now());
-                        setState(() {});
-                      }
+                    ? _addDrink
                     : _checkUserInfoAndStartSession,
                   child: Text(
                     isTracking ? 'Add One Standard Drink' : 'Start Session',
@@ -154,6 +153,14 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isTracking = true; // Set tracking flag to true
       drinkCount = 0; // Reset drink count for the new session
+    });
+  }
+
+   void _addDrink() {
+    drinksBox.add(DateTime.now()); 
+
+    setState(() {
+      drinkCount++; 
     });
   }
 
