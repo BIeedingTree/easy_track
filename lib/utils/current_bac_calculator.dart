@@ -12,21 +12,13 @@ double calculateCurrentBAC({
   required List<DateTime> consumptionTimes,
   DateTime? currentTime,
 }) {
-  double r;
-  if (sex == 'male') {
-    r = 0.68;
-  } 
-  else if (sex.toLowerCase() == 'female') {
-    r = 0.55;
-  } 
-  else {
-    r = 0.615;
-  }
+  final r = (sex.toLowerCase() == 'male') ? 0.68 : 0.55; 
 
   currentTime ??= DateTime.now();
 
   const double eliminationRate = 0.015;
   const double standardDrinkGrams = 14.0;
+  const double absorptionRatePerMinute = 0.04; // Per minute
 
   double weightGrams = weightLb * 453.6;
   double totalBAC = 0.0;
@@ -37,10 +29,12 @@ double calculateCurrentBAC({
       continue;
     }
 
-    double hoursElapsed = currentTime.difference(drinkTime).inMinutes / 60.0;
-
     // Calculate the BAC contribution for this standard drink using the Widmark formula
-    double drinkBAC = (standardDrinkGrams / (weightGrams * r)) * 100 - (eliminationRate * hoursElapsed);
+    // modified with an absorption delay
+    int elapsedMinutes = currentTime.difference(drinkTime).inMinutes;
+    double absorptionFraction = 1 - exp(-absorptionRatePerMinute * elapsedMinutes);
+    double drinkBAC = (standardDrinkGrams / (weightGrams * r)) * absorptionFraction;
+    drinkBAC -= eliminationRate * (elapsedMinutes / 60.0);
 
     drinkBAC = max(0, drinkBAC);
 
