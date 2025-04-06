@@ -114,13 +114,13 @@ class _HomeScreenState extends State<HomeScreen> {
             case 0:
               Navigator.pushNamed(context, '/'); // Navigate to Home Screen
               break;
+            // case 1:
+            //   Navigator.pushNamed(context, '/session'); // Navigate to Session Screen
+            //   break;
             case 1:
-              Navigator.pushNamed(context, '/session'); // Navigate to Session Screen
-              break;
-            case 2:
               Navigator.pushNamed(context, '/user_info');// Navigate to User_Info Screen
               break;
-            case 3:
+            case 2:
               Navigator.pushNamed(context, '/information'); // Navigate to Information Screen
               break;
           }

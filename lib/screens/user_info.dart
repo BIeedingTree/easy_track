@@ -130,19 +130,19 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       ),
       // Bottom Navigation Bar
       bottomNavigationBar: BottomNavBar(
-        currentIndex: 2, // Index for "User Info" tab
+        currentIndex: 1, // Index for "User Info" tab
         onTap: (index) {
           switch (index) {
             case 0:
               Navigator.pushNamed(context, '/'); // Navigate to Home Screen
               break;
+            // case 1:
+            //   Navigator.pushNamed(context, '/session'); // Navigate to Session Screen
+            //   break;
             case 1:
-              Navigator.pushNamed(context, '/session'); // Navigate to Session Screen
-              break;
-            case 2:
               // Do nothing since this is the current page 
               break;
-            case 3:
+            case 2:
               Navigator.pushNamed(context, '/information'); // Navigate to Information Screen
               break;
           }
