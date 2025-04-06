@@ -11,6 +11,9 @@ void main() async {
 
   await Hive.openBox('userBox');
 
+  await Hive.openBox<DateTime>('drinksBox');
+
+
   runApp(const EasyTrackApp());
 }
 
