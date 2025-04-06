@@ -21,25 +21,26 @@ double calculateCurrentBAC({
   const double absorptionRatePerMinute = 0.04; // Per minute
 
   double weightGrams = weightLb * 453.6;
-  double totalBAC = 0.0;
+  double totalAbsorbedAlcohol  = 0.0;
 
+  // Sum the absorbed alcohol for each drink
   for (var drinkTime in consumptionTimes) {
-    // Only consider drinks consumed at or before the current time.
-    if (drinkTime.isAfter(currentTime)) {
-      continue;
-    }
+    if (drinkTime.isAfter(currentTime)) continue;
 
-    // Calculate the BAC contribution for this standard drink using the Widmark formula
-    // modified with an absorption delay
     int elapsedMinutes = currentTime.difference(drinkTime).inMinutes;
+    // Calculate the fraction of alcohol absorbed at this time
     double absorptionFraction = 1 - exp(-absorptionRatePerMinute * elapsedMinutes);
-    double drinkBAC = (standardDrinkGrams / (weightGrams * r)) * absorptionFraction * 100;
-    drinkBAC -= eliminationRate * (elapsedMinutes / 60.0);
-
-    drinkBAC = max(0, drinkBAC);
-
-    totalBAC += drinkBAC;
+    totalAbsorbedAlcohol += standardDrinkGrams * absorptionFraction;
   }
-  
-  return totalBAC;
+
+  // Calculate the BAC without elimination
+  double bacWithoutElimination = (totalAbsorbedAlcohol / (weightGrams * r)) * 100;
+
+  // Compute elimination based on the elapsed time since the first drink
+  int totalElapsedMinutes = currentTime.difference(consumptionTimes.first).inMinutes;
+  double elimination = eliminationRate * (totalElapsedMinutes / 60.0);
+
+  double bac = bacWithoutElimination - elimination;
+
+  return max(0, bac);
 }
