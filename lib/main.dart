@@ -1,10 +1,11 @@
-import 'package:easy_track/models/session.dart';
+// import 'package:easy_track/models/session.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_track/screens/home_screen.dart';
 // import 'package:easy_track/screens/sessions.dart';
 import 'package:easy_track/screens/information.dart';
 import 'package:easy_track/screens/user_info.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:easy_track/services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +14,8 @@ void main() async {
   await Hive.openBox('userBox');
   await Hive.openBox<DateTime>('drinksBox');
   // await Hive.openBox<Session>('sessionsBox');
+
+  await initNotifications();
 
   runApp(const EasyTrackApp());
 }
