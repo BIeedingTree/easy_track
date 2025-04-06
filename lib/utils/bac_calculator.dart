@@ -53,7 +53,7 @@ double calculateCurrentBAC({
 }
 
 List<FlSpot> generateBACDataPoints({
-  required double weightKg,
+  required double weightLb,
   required String sex,
   required List<Drink> drinks,
 }) {
@@ -71,7 +71,7 @@ List<FlSpot> generateBACDataPoints({
   // Simulate BAC over time until it reaches 0
   while (bac > 0 || currentTime == startTime) {
     bac = calculateCurrentBAC(
-      weightLb: weightKg * 2.205, // Convert kg to lbs
+      weightLb: weightLb,
       sex: sex,
       drinks: drinks,
       currentTime: currentTime,
@@ -82,7 +82,7 @@ List<FlSpot> generateBACDataPoints({
     dataPoints.add(FlSpot(hoursSinceStart, bac));
 
     // Increment time by 5 minutes
-    currentTime = currentTime.add(Duration(minutes: 5));
+    currentTime = currentTime.add(const Duration(minutes: 5));
   }
 
   return dataPoints;
