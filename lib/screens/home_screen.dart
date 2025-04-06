@@ -11,8 +11,8 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Easy Track'),
         backgroundColor: Colors.green,
       ),
-      body: Center(
-        child: const Text(
+      body: const Center(
+        child: Text(
           'Welcome to Easy Track!',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
