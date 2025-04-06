@@ -25,8 +25,8 @@ class InformationScreen extends StatelessWidget {
               const SizedBox(height: 10),
               const Text(
                 'Easy Track is an alcohol tracking app that tracks your Blood Alcohol Content (BAC) over a drinking session. '
-                'Tracking your BAC is important for understanding your level of intoxication. Once your BAC reaches 0.08, you become '
-                'over the legal limit, are at a reduced ability to process information and have a risk of injury.',
+                'Tracking your BAC is important for understanding your level of intoxication. Once your BAC reaches 0.08, you are '
+                'over the legal limit, are at a reduced ability to process information, and have a risk of injury.',
                 style: TextStyle(fontSize: 15.2),
               ),
               const SizedBox(height: 20),

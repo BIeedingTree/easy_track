@@ -136,39 +136,24 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             
-            // Middle - BAC Chart
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: isTracking 
-                ? SizedBox(
-                    height: 300,
-                    child: BACChart(bacData: bacData),
-                  )
-                : const Center(child: Text('No active session')),
-            ),
-            
-            // Bottom - Add Drink or Start Session button
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  ),
-                  onPressed: isTracking 
-                    ? _addDrink
-                    : _checkUserInfoAndStartSession,
-                  child: Text(
-                    isTracking ? 'Add One Standard Drink' : 'Start Session',
-                    style: const TextStyle(fontSize: 16),
+            Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Center(
+                    child: isTracking
+                        ? SizedBox(
+                            height: 300,
+                            child: BACChart(bacData: bacData),
+                          )
+                        : const Text('No active session'),
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),
+
+ 
       bottomNavigationBar: BottomNavBar(
         currentIndex: 0, // Index for "User Info" tab
         onTap: (index) {
@@ -188,6 +173,24 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
       ),
+      bottomSheet: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.all(16.0),
+        width: double.infinity,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+          ),
+          onPressed: isTracking 
+            ? _addDrink
+            : _checkUserInfoAndStartSession,
+          child: Text(
+            isTracking ? 'Add One Standard Drink' : 'Start Session',
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+      ),
+
     );
   }
 
